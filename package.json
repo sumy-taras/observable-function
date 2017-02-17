@@ -1,0 +1,37 @@
+{
+  "name": "observable-function",
+  "version": "0.1.0",
+  "description": "Wrapper which makes any function to observable and allows to control the params passed to function and the result of performing.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sumy-taras/observable-function.git"
+  },
+  "keywords": [
+    "observable",
+    "function",
+    "cover",
+    "wrap",
+    "before",
+    "after",
+    "error",
+    "check"
+  ],
+  "author": {
+    "name": "Taras Panasiuk",
+    "email": "sumy.taras@gmail.com",
+    "ulr": "https://github.com/sumy-taras"
+  },
+  "license": "MIT",
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+  "bugs": {
+    "url": "https://github.com/sumy-taras/observable-function/issues"
+  },
+  "homepage": "https://github.com/sumy-taras/observable-function#readme"
+}
