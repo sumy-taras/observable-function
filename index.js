@@ -1,6 +1,6 @@
 'use strict';
 
-const bundle = require('./observable-function')
+const bundle = require('./lib/observable-function')
 
 module.exports.wrap = bundle.wrap
 

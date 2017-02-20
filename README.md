@@ -5,6 +5,8 @@ This module has wrapper which makes any function to observable and allows to con
 
 ## Install
 
+> Install with [npm](https://www.npmjs.com/)
+
 ```bash
 $ npm install observable-function
 ```
@@ -12,8 +14,9 @@ $ npm install observable-function
 
 ## Usage
 
-```javascript
+> For more use-cases try [examples](./examples)
 
+```javascript
 const mul10 = e => e * 10
 
 var add = function(a, b) {
@@ -36,20 +39,20 @@ var wrapped_add = wrap(add)
 
 ## API
 
-Supported chainable notation. Handlers may be several.
-Each handler receive one argument (*array*) and could return the result which will be used as argument for next handler (or wrapped function). If the type of returned value is Error then will be invoked sequentially all error handlers. If the error is processed and returned another value (not error) then processing will continue.
+> Supported chainable notation. Handlers may be several.
+> Each handler receive one argument (*array*) and could return the result which will be used as argument for next handler (or wrapped function). If the type of returned value is Error then will be invoked sequentially all error handlers. If the error is processed and returned another value (not error) then processing will continue.
 
 ### before(*function*)
 
-Attach function which will be called before wrapped function
+> Attach function which will be called before wrapped function
 
 ### after(*function*)
 
-Attach function which will be called after wrapped function
+> Attach function which will be called after wrapped function
 
 ### error(*function*)
 
-Attach error handler
+> Attach error handler
 
 
 ## License
