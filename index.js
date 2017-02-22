@@ -1,11 +1,6 @@
 'use strict';
 
-const bundle = require('./lib/observable-function')
+const { wrap } = require('./lib/wrapper')
+const { stub, transfer, holder, transferr, holderr, casts } = require('./lib/handy')
 
-module.exports.wrap = bundle.wrap
-
-module.exports.stub = bundle.stub
-module.exports.transfer = bundle.transfer
-module.exports.holder = bundle.holder
-module.exports.transferr = bundle.transferr
-module.exports.holderr = bundle.holderr
+module.exports = { wrap, stub, transfer, holder, transferr, holderr, casts }

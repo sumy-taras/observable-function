@@ -16,26 +16,45 @@ $ npm install observable-function
 
 > For more use-cases try [examples](./examples)
 
+We can wrap function and add validators for arguments and logger for input and output values:
 ```javascript
-const mul10 = e => e * 10
+const { wrap } = require('observable-function')
+const { logFunc, errFunc, PropertyError } = require('./common')
 
-var add = function(a, b) {
-  return a + b
-}
+const checkArgCount = count =>
+  p => (p.length<count) ? new PropertyError('arguments', p, `must be ${count}`) : undefined
 
-var wrapped_add = wrap(add)
-  .before(p => {
-    if (p.length<2) {
-      return new PropertyError('arguments', p, 'must be two')
-    }
-  })
-  .error(errFunc('ERROR1: '))
-  .error(e => e.values.concat(0))
-  .before(logFunc('b1: '))
-  .after(logFunc('a1: '))
+let add = wrap((a, b) => a + b)
+  .before(checkArgCount(2))
+  .before(logFunc('1. before: '))
+  .after(logFunc('1. after: '))
+  .error(errFunc('1. error'))
 
+console.log('1. result = ', add(3, 5))
+
+console.log('2. result = ', add(4))
 ```
+Further we can add error handler which resolve issue with missing some arguments:
+```javascript
+add.error(e => e.values.concat(0, 0))
 
+console.log('3. result = ', add(4))
+```
+Also we can change incoming and outcoming values so that it will be imperceptible both for initial function and for it callers:
+```javascript
+add
+  .before(a => a.map(mul10))
+  .before(logFunc('2. before: '))
+  .after(mul10)
+  .after(logFunc('2. after: '))
+
+console.log('4. result = ', add(2, 7))
+
+console.log('5. result = ', add(2))
+
+console.log('6. result = ', add())
+```
+although it is desirable to do like this in rare special cases.
 
 ## API
 
@@ -46,14 +65,45 @@ var wrapped_add = wrap(add)
 
 > Attach function which will be called before wrapped function
 
+```javascript
+const checkArgCount = count =>
+  p => (p.length<count) ? new PropertyError('arguments', p, `must be ${count}`) : undefined
+
+let add = wrap((a, b) => a + b)
+
+add.before(checkArgCount(2))
+```
+
 ### after(*function*)
 
 > Attach function which will be called after wrapped function
+
+```javascript
+const logFunc = message => args => { console.log(message, args); return args }
+
+let add = wrap((a, b) => a + b)
+
+add.after(logFunc('1. after: '))
+```
 
 ### error(*function*)
 
 > Attach error handler
 
+```javascript
+const errFunc = message => err => {
+  if (err instanceof PropertyError) {
+    console.warn(`${message} [${err.name}] - ${err.message} ${err.property}`)
+  } else {
+    console.error(message, err.name, err.message)
+  }
+  return err
+}
+
+let add = wrap((a, b) => a + b)
+
+add.error(errFunc('1. error'))
+```
 
 ## License
 

@@ -14,9 +14,9 @@ function PropertyError(property, values, message) {
 }
 PropertyError.prototype = Object.create(Error.prototype)
 
-var logFunc = message => args => { console.log(message, args); return args }
+const logFunc = message => args => { console.log(message, args); return args }
 
-var errFunc = message => err => {
+const errFunc = message => err => {
   if (err instanceof PropertyError) {
     console.warn(`${message} [${err.name}] - ${err.message} ${err.property}`)
     // console.info(message, err.name, err.property, err.message)
@@ -26,6 +26,4 @@ var errFunc = message => err => {
   return err
 }
 
-module.exports.PropertyError = PropertyError
-module.exports.logFunc = logFunc
-module.exports.errFunc = errFunc
+module.exports = { logFunc, errFunc, PropertyError }
