@@ -1,7 +1,6 @@
 # observable-function
 
-This module has wrapper which makes any function to observable and allows to control the params passed to function and the result of performing.
-
+Wraps the function and makes it observable what allows to control the params passed to function and the result of performing.
 
 ## Install
 
@@ -40,21 +39,28 @@ add.error(e => e.values.concat(0, 0))
 
 console.log('3. result = ', add(4))
 ```
-Also we can change incoming and outcoming values so that it will be imperceptible both for initial function and for it callers:
+Also we can clone wrapper and change incoming and outcoming values so that it will be imperceptible both for initial function and for it callers:
 ```javascript
-add
+const cloned_add = add.clone()
   .before(a => a.map(mul10))
   .before(logFunc('2. before: '))
   .after(mul10)
   .after(logFunc('2. after: '))
 
-console.log('4. result = ', add(2, 7))
+console.log('4. result = ', cloned_add(8, 7))
 
-console.log('5. result = ', add(2))
+console.log('5. result = ', cloned_add(2))
 
-console.log('6. result = ', add())
+console.log('6. result = ', cloned_add())
 ```
-although it is desirable to do like this in rare special cases.
+If you pass new function as argument of clone method then we get a new wrapper with another kernel function.
+```javascript
+const cloned_subtract = add.clone((a, b) => a - b)
+
+console.log('7. result = ', cloned_subtract(10, 9))
+
+console.log('8. result = ', cloned_subtract(6))
+```
 
 ## API
 
@@ -63,7 +69,7 @@ although it is desirable to do like this in rare special cases.
 
 ### before(*function*)
 
-> Attach function which will be called before wrapped function
+> Attach function which will be called before wrapped function.
 
 ```javascript
 const checkArgCount = count =>
@@ -76,7 +82,7 @@ add.before(checkArgCount(2))
 
 ### after(*function*)
 
-> Attach function which will be called after wrapped function
+> Attach function which will be called after wrapped function.
 
 ```javascript
 const logFunc = message => args => { console.log(message, args); return args }
@@ -88,7 +94,7 @@ add.after(logFunc('1. after: '))
 
 ### error(*function*)
 
-> Attach error handler
+> Attach error handler.
 
 ```javascript
 const errFunc = message => err => {
@@ -103,6 +109,18 @@ const errFunc = message => err => {
 let add = wrap((a, b) => a + b)
 
 add.error(errFunc('1. error'))
+```
+
+### clone(*function*)
+
+> Returns a new wrapper with the same kernel function and sets of handlers.
+> If you pass new function as argument of clone method then we get a new wrapper with another kernel function.
+
+
+```javascript
+const cloned_add = add.clone()
+
+const cloned_subtract = add.clone((a, b) => a - b)
 ```
 
 ## License
