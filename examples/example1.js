@@ -1,25 +1,28 @@
 const { wrap } = require('../index')
 const { logFunc, errFunc, PropertyError } = require('./common')
 
-const mul10 = e => e * 10
+const mul10 = e => e * 10;
 
 const checkArgCount = count =>
-  p => (p.length<count) ? new PropertyError('arguments', p, `must be ${count}`) : undefined
+  p => (p.length < count) ? new PropertyError('arguments', p, `must be ${count}`) : undefined
 
 // we can wrap function and add some validator for arguments and logger for input and output values
 const add = wrap((a, b) => a + b)
   .before(checkArgCount(2))
-  .before(logFunc('1. before: '))
-  .after(logFunc('1. after: '))
-  .error(errFunc('1. error'))
+  .before(logFunc('before: '))
+  .after(logFunc('after: '))
+  .berror(errFunc('berror: '))
+  .error(errFunc('error: '))
 
 console.log('1. result = ', add(3, 5))
 
 console.log('2. result = ', add(4))
 
-// further we can add error handler which resolve issue with missing some arguments
+// further we can add error handler (invoked before main function) which resolve issue with missing some arguments
+const increaseArgsCount = e => (e.property === 'arguments') ? e.values.concat(0, 0) : e
+
 add
-  .error(e => e.values.concat(0, 0))
+  .berror(increaseArgsCount)
 
 console.log('3. result = ', add(4))
 
@@ -27,9 +30,9 @@ console.log('3. result = ', add(4))
 // so that it will be imperceptible both for initial function and for it callers
 const cloned_add = add.clone()
   .before(a => a.map(mul10))
-  .before(logFunc('2. before: '))
+  .before(logFunc('_before: '))
   .after(mul10)
-  .after(logFunc('2. after: '))
+  .after(logFunc('_after: '))
 
 console.log('4. result = ', cloned_add(8, 7))
 

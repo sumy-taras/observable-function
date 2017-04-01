@@ -14,15 +14,13 @@ function PropertyError(property, values, message) {
 }
 PropertyError.prototype = Object.create(Error.prototype)
 
-const logFunc = message => args => { console.log(message, args); return args }
+const logFunc = message => args => {
+  console.log(message, args);
+  return args
+}
 
 const errFunc = message => err => {
-  if (err instanceof PropertyError) {
-    console.warn(`${message} [${err.name}] - ${err.message} ${err.property}`)
-    // console.info(message, err.name, err.property, err.message)
-  } else {
-    console.error(message, err.name, err.message)
-  }
+  console.error(message, err.name, err.message)
   return err
 }
 

@@ -4,38 +4,48 @@ Wraps the function and makes it observable what allows to control the params pas
 
 ## Install
 
-> Install with [npm](https://www.npmjs.com/)
+> Install on Node.JS with [npm](https://www.npmjs.com/)
 
 ```bash
 $ npm install observable-function
 ```
 
+> Install for the browser
+
+This package include a build [observable-function.js](./lib/observable-function.js) ready for the browser as well as it minified version [observable-function.min.js](./lib/observable-function.min.js).
+Also you can use [Browserify](https://github.com/substack/node-browserify) to organize your browser code and load modules installed by npm.
 
 ## Usage
 
 > For more use-cases try [examples](./examples)
 
-We can wrap function and add validators for arguments and logger for input and output values:
+Just required function **wrap** from module:
 ```javascript
 const { wrap } = require('observable-function')
+```
+Then we can wrap function and add some validator for arguments and logger for input and output values:
+```javascript
 const { logFunc, errFunc, PropertyError } = require('./common')
 
+const mul10 = e => e * 10;
 const checkArgCount = count =>
-  p => (p.length<count) ? new PropertyError('arguments', p, `must be ${count}`) : undefined
+  p => (p.length < count) ? new PropertyError('arguments', p, `must be ${count}`) : undefined
 
-let add = wrap((a, b) => a + b)
+const add = wrap((a, b) => a + b)
   .before(checkArgCount(2))
-  .before(logFunc('1. before: '))
-  .after(logFunc('1. after: '))
-  .error(errFunc('1. error'))
+  .before(logFunc('before: '))
+  .after(logFunc('after: '))
+  .berror(errFunc('berror: '))
+  .error(errFunc('error: '))
 
 console.log('1. result = ', add(3, 5))
 
 console.log('2. result = ', add(4))
 ```
-Further we can add error handler which resolve issue with missing some arguments:
+Further we can add error handler (invoked before main function) which resolve issue with missing some arguments:
 ```javascript
-add.error(e => e.values.concat(0, 0))
+add
+  .berror(increaseArgsCount)
 
 console.log('3. result = ', add(4))
 ```
@@ -92,9 +102,16 @@ let add = wrap((a, b) => a + b)
 add.after(logFunc('1. after: '))
 ```
 
+### berror(*function*)
+
+> Attach an error handler to which will be passed to the error occurred before calling the wrapped function.
+
+```javascript
+```
+
 ### error(*function*)
 
-> Attach error handler.
+> Attach an error handler to which will be passed to the error occurred during or after calling the wrapped function.
 
 ```javascript
 const errFunc = message => err => {
