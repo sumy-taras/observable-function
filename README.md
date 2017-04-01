@@ -107,6 +107,10 @@ add.after(logFunc('1. after: '))
 > Attach an error handler to which will be passed to the error occurred before calling the wrapped function.
 
 ```javascript
+const increaseArgsCount = e => (e.property === 'arguments') ? e.values.concat(0, 0) : e
+
+add
+  .berror(increaseArgsCount)
 ```
 
 ### error(*function*)

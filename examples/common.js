@@ -20,7 +20,12 @@ const logFunc = message => args => {
 }
 
 const errFunc = message => err => {
-  console.error(message, err.name, err.message)
+  if (err instanceof PropertyError) {
+    console.warn(`${message} [${err.name}] - ${err.message} ${err.property}`)
+    // console.info(message, err.name, err.property, err.message)
+  } else {
+    console.error(message, err.name, err.message)
+  }
   return err
 }
 

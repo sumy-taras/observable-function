@@ -1,7 +1,7 @@
 'use strict';
 
-const { wrap } = require('./lib/wrap')
-const { stub, transfer, holder, transferr, holderr, casts } = require('./lib/handy')
+const { wrap } = require('./es6/wrap')
+const { stub, transfer, holder, transferr, holderr, casts } = require('./es6/handy')
 
 module.exports = {
   wrap,

@@ -1,3 +1,9 @@
+## 0.1.4 / 2017-04-01
+- update `README.md`
+- add build (and minified version) ready for the browser
+- add new method `berror`
+
+
 ## 0.1.3 / 2017-02-24
 - update `README.md`
 - merge example1 and example2 to a single

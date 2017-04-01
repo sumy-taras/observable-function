@@ -8,7 +8,7 @@
     "build": "npm run es6 & npm run es5 & npm run browserify & npm run minify",
     "es6": "babel src -d es6",
     "es5": "babel es6 -d es5 --presets es2015",
-    "browserify": "browserify es5/wrap.js -o lib/observable-function.js",
+    "browserify": "browserify es5/observable-function.js -o lib/observable-function.js",
     "minify": "uglifyjs lib/observable-function.js -o lib/observable-function.min.js -c -m"
   },
   "repository": {
@@ -34,13 +34,12 @@
     "ulr": "https://github.com/sumy-taras"
   },
   "license": "MIT",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
-    "eslint": "^3.18.0",
     "babel-cli": "^6.24.0",
     "babel-preset-es2015": "^6.24.0",
     "browserify": "^14.1.0",
+    "eslint": "^3.18.0",
     "uglify-js": "^2.8.18"
   },
   "bugs": {
